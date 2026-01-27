@@ -13,6 +13,8 @@ async function readFile(fileName) {
   }
 }
 
+const START = 50;
+const LIMIT = 100;
 async function main() {
   const rotations = await readFile("input.txt");
   const password = crackSafe(rotations);
@@ -21,7 +23,7 @@ async function main() {
 main();
 
 function crackSafe(rotations) {
-  let dial = 50;
+  let dial = START;
   let password = 0;
 
   for (let rot of rotations) {
@@ -29,14 +31,12 @@ function crackSafe(rotations) {
     if (rot.charAt(0) === "R") {
       dial += amount;
     } else if (rot.charAt(0) === "L") {
-      dial -= amount;
+      dial += LIMIT - amount;
     }
+    dial = dial % LIMIT;
 
-    dial = dial % 100;
     if (dial === 0) {
       password++;
-    } else if (dial < 0) {
-      dial = 100 + dial;
     }
   }
 
