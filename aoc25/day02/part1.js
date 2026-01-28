@@ -14,41 +14,36 @@ async function readFile(fileName) {
 }
 
 async function main() {
-  const ids = await readFile("input.txt");
-  const sum = findInvalidIDs(ids);
+  const idPairs = await readFile("input.txt");
+  const sum = sumInvalidIds(idPairs);
   console.log(`Result: ${sum}`);
 }
 main();
 
-function findInvalidIDs(array) {
+function sumInvalidIds(idRanges) {
   let sum = 0;
-  for (let pair of array) {
-    const idSplit = pair.split("-");
+  for (let idPair of idRanges) {
+    const range = idPair.split("-");
 
-    const startId = parseInt(idSplit[0]);
-    const endId = parseInt(idSplit[1]);
-
+    const startId = parseInt(range[0]);
+    const endId = parseInt(range[1]);
     for (i = startId; i <= endId; i++) {
       const idStr = `${i}`;
       if (idStr.length % 2 === 1) {
         continue;
       }
+
       const div = idStr.length / 2;
       const halfStr = idStr.substring(0, div);
 
       const possiblyInvalidIdStr = `${halfStr}${halfStr}`;
       const possiblyInvalidId = parseInt(possiblyInvalidIdStr);
-      if (
-        i === possiblyInvalidId &&
-        startId <= possiblyInvalidId &&
-        endId >= possiblyInvalidId
-      ) {
-        sum += possiblyInvalidId;
+      if (i !== possiblyInvalidId) {
+        continue;
       }
+      sum += possiblyInvalidId;
     }
   }
 
   return sum;
 }
-
-//18893502033
