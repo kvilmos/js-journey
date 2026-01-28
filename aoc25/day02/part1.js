@@ -1,22 +1,13 @@
 const fs = require("node:fs/promises");
-const { parse } = require("node:path");
 const path = require("path");
 
 async function readFile(fileName) {
   try {
     const filePath = path.join(__dirname, fileName);
     const data = await fs.readFile(filePath, "utf8");
-    const array = data.split(/\r?\n/);
+    const array = data.split(",");
 
-    const res = [];
-    for (let value of array) {
-      const split = value.split(",");
-      for (let pair of split) {
-        res.push(pair);
-      }
-    }
-
-    return res;
+    return array;
   } catch (err) {
     console.error(err);
   }
@@ -32,9 +23,6 @@ main();
 function findInvalidIDs(array) {
   let sum = 0;
   for (let pair of array) {
-    if (pair === "") {
-      continue;
-    }
     const idSplit = pair.split("-");
 
     const startId = parseInt(idSplit[0]);
@@ -55,7 +43,6 @@ function findInvalidIDs(array) {
         startId <= possiblyInvalidId &&
         endId >= possiblyInvalidId
       ) {
-        console.log(possiblyInvalidId);
         sum += possiblyInvalidId;
       }
     }
@@ -63,3 +50,5 @@ function findInvalidIDs(array) {
 
   return sum;
 }
+
+//18893502033
