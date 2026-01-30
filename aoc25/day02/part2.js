@@ -27,20 +27,19 @@ function sumInvalidIds(idRanges) {
 
     const startId = parseInt(range[0]);
     const endId = parseInt(range[1]);
-
     for (let i = startId; i <= endId; i++) {
       const idStr = `${i}`;
       const length = idStr.length;
 
-      const div = Math.floor(idStr.length / 2);
-      const halfId = idStr.substring(0, div);
+      const halfLength = Math.floor(idStr.length / 2);
+      const halfIdStr = idStr.substring(0, halfLength);
       let added = false;
-      for (let k = div - 1; k >= 0; k--) {
+      for (let k = halfLength - 1; k >= 0; k--) {
         const times = Math.floor(length / (k + 1));
         let possiblyInvalidIdStr = "";
-        for (let v = 0; v < times; v++) {
-          possiblyInvalidIdStr =
-            possiblyInvalidIdStr + halfId.substring(0, k + 1);
+        const pattern = halfIdStr.substring(0, k + 1);
+        for (let t = 0; t < times; t++) {
+          possiblyInvalidIdStr = possiblyInvalidIdStr + pattern;
         }
 
         const possiblyInvalidId = parseInt(possiblyInvalidIdStr);
