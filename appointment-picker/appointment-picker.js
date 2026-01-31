@@ -6,7 +6,6 @@ const OPEN_MIN = 0;
 const CLOSING_HOUR = 17;
 const CLOSING_MIN = 0;
 
-const timeGap = 30;
 const TIME_GAP_IN_MIN = 30;
 const MINS_IN_MS = 60000;
 
@@ -29,9 +28,7 @@ function initializeFirstAppointment() {
   openDate.setMinutes(OPEN_MIN);
   const startTime = openDate.getTime();
 
-  let dateOffset = new Date("2026-01-31T11:30:00Z");
-  const currentTime = dateOffset.getTime();
-
+  const currentTime = new Date.getTime();
   const differenceInMs = currentTime - startTime;
   if (differenceInMs <= 0) {
     return new Date(startTime);
