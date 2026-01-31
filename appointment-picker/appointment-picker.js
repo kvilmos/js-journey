@@ -1,28 +1,67 @@
 const appointmentDiv = document.getElementById("appointment-section");
 
-const firstAvailableTimestamp = [10, 0];
-const closingTime = [17, 0];
+const firstAppointment = {
+  hour: 10,
+  minutes: 0,
+};
+const closingTime = {
+  hour: 17,
+  minutes: 0,
+};
 const timeGap = 30;
 
+const minuteInMilliseconds = 60000;
 loadAllAppointments();
+
 function loadAllAppointments() {
-  let time = firstAvailableTimestamp;
   appointmentDiv.innerHTML = "";
-  while (time[0] !== closingTime[0]) {
-    const timeDiv = document.createElement("div");
-    const minStr = String(time[1]).padStart(2, 0);
-    timeDiv.innerText = `${time[0]}:${minStr}`;
-    time = incrementTime(time);
-    appointmentDiv.append(timeDiv);
+  let date = initializeFirstAppointment();
+  let closeDate = new Date();
+  closeDate.setHours(closingTime.hour);
+  closeDate.setMinutes(closingTime.minutes);
+
+  while (date <= closeDate) {
+    const appointmentBubbleDiv = document.createElement("div");
+    const minutesStr = String(date.getMinutes()).padStart(2, 0);
+    appointmentBubbleDiv.innerText = `${date.getHours()}:${minutesStr}`;
+    incrementAppointment(date);
+    appointmentDiv.append(appointmentBubbleDiv);
   }
 }
 
-function incrementTime(time) {
-  const hour = time[0];
-  const min = time[1];
+function initializeFirstAppointment() {
+  let currentTime = new Date().getTime();
 
-  const newMin = min + timeGap;
-  const newHour = hour + Math.floor(newMin / 60);
+  let startAppointment = new Date();
+  startAppointment.setHours(firstAppointment.hour);
+  startAppointment.setMinutes(firstAppointment.minutes);
+  const startTime = startAppointment.getTime();
 
-  return [newHour, newMin % 60];
+  const timeDifference = currentTime - startTime;
+  if (timeDifference <= 0) {
+    return new Date(startTime);
+  }
+
+  let newMinutes = timeDifference % timeGap === 0 ? 0 : timeGap;
+  let elapsedGaps = Math.floor(
+    timeDifference / (timeGap * minuteInMilliseconds),
+  );
+
+  let date = new Date();
+  date.setMinutes(elapsedGaps * timeGap + newMinutes);
+
+  return date;
+}
+
+function incrementAppointment(date) {
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  const newMinutes = (minutes + timeGap) % 60;
+  const newHour = hours + Math.floor((minutes + timeGap) / 60);
+
+  date.setHours(newHour);
+  date.setMinutes(newMinutes);
+
+  return date;
 }
