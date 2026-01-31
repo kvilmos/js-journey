@@ -1,67 +1,70 @@
 const appointmentDiv = document.getElementById("appointment-section");
 
-const firstAppointment = {
-  hour: 10,
-  minutes: 0,
-};
-const closingTime = {
-  hour: 17,
-  minutes: 0,
-};
-const timeGap = 30;
+const OPEN_HOUR = 10;
+const OPEN_MIN = 0;
 
-const minuteInMilliseconds = 60000;
+const CLOSING_HOUR = 17;
+const CLOSING_MIN = 0;
+
+const timeGap = 30;
+const TIME_GAP_IN_MIN = 30;
+const MINS_IN_MS = 60000;
+
+let appointments = [];
+createAppointments();
 loadAllAppointments();
 
-function loadAllAppointments() {
-  appointmentDiv.innerHTML = "";
+function createAppointments() {
+  appointments = [];
   let date = initializeFirstAppointment();
-  let closeDate = new Date();
-  closeDate.setHours(closingTime.hour);
-  closeDate.setMinutes(closingTime.minutes);
-
-  while (date <= closeDate) {
-    const appointmentBubbleDiv = document.createElement("div");
-    const minutesStr = String(date.getMinutes()).padStart(2, 0);
-    appointmentBubbleDiv.innerText = `${date.getHours()}:${minutesStr}`;
-    incrementAppointment(date);
-    appointmentDiv.append(appointmentBubbleDiv);
+  while (date.getHours() < CLOSING_HOUR || date.getMinutes() < CLOSING_MIN) {
+    appointments.push(new Date(date));
+    date = incrementAppointment(date);
   }
 }
 
 function initializeFirstAppointment() {
-  let currentTime = new Date().getTime();
+  const openDate = new Date();
+  openDate.setHours(OPEN_HOUR);
+  openDate.setMinutes(OPEN_MIN);
+  const startTime = openDate.getTime();
 
-  let startAppointment = new Date();
-  startAppointment.setHours(firstAppointment.hour);
-  startAppointment.setMinutes(firstAppointment.minutes);
-  const startTime = startAppointment.getTime();
+  let dateOffset = new Date("2026-01-31T11:30:00Z");
+  const currentTime = dateOffset.getTime();
 
-  const timeDifference = currentTime - startTime;
-  if (timeDifference <= 0) {
+  const differenceInMs = currentTime - startTime;
+  if (differenceInMs <= 0) {
     return new Date(startTime);
   }
 
-  let newMinutes = timeDifference % timeGap === 0 ? 0 : timeGap;
-  let elapsedGaps = Math.floor(
-    timeDifference / (timeGap * minuteInMilliseconds),
-  );
+  const timeGapInMs = TIME_GAP_IN_MIN * MINS_IN_MS;
+  let elapsedGaps = Math.floor(differenceInMs / timeGapInMs);
+  let newMinutes = differenceInMs % timeGapInMs === 0 ? 0 : TIME_GAP_IN_MIN;
 
-  let date = new Date();
-  date.setMinutes(elapsedGaps * timeGap + newMinutes);
+  let date = new Date(startTime);
+  date.setMinutes(elapsedGaps * TIME_GAP_IN_MIN + newMinutes);
 
   return date;
 }
 
 function incrementAppointment(date) {
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
+  let newTimestamp = date.getTime();
+  newTimestamp = newTimestamp + TIME_GAP_IN_MIN * MINS_IN_MS;
+  return new Date(newTimestamp);
+}
 
-  const newMinutes = (minutes + timeGap) % 60;
-  const newHour = hours + Math.floor((minutes + timeGap) / 60);
+function loadAllAppointments() {
+  appointmentDiv.innerHTML = "";
 
-  date.setHours(newHour);
-  date.setMinutes(newMinutes);
+  for (let i = 0; i < appointments.length; i++) {
+    const minutesStr = String(appointments[i].getMinutes()).padStart(2, 0);
+    const dateText = `${appointments[i].getHours()}:${minutesStr}`;
 
-  return date;
+    const appointmentBubbleDiv = document.createElement("div");
+    appointmentBubbleDiv.innerHTML = `
+      <input type="radio" id="appointment-${i}" name="appointments" value="${dateText}" />
+      <label class="appointment-bubble" for="appointment-${i}">${dateText}</label>
+    `;
+    appointmentDiv.append(appointmentBubbleDiv);
+  }
 }
