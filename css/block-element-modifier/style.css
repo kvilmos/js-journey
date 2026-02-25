@@ -1,0 +1,27 @@
+body {
+  display: flex;
+}
+
+.card {
+  max-width: 300px;
+  margin: 2em;
+  padding: 2em;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+}
+
+.card--light {
+  background: #eee;
+}
+
+.card--dark {
+  background: #333;
+  color: #fff;
+}
+
+.card__image {
+  aspect-ratio: 1 / 1;
+}
+
+.card__body {
+  color: #909090;
+}
