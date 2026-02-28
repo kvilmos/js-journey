@@ -1,15 +1,16 @@
 {
-  "name": "client",
+  "name": "@app/client",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@app/shared": "workspace:*",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
