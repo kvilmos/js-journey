@@ -2,10 +2,17 @@
   "name": "@app/server",
   "module": "index.js",
   "type": "module",
+  "scripts": {
+    "dev": "bun --watch index.js"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "@app/shared": "workspace:*",
+    "hono": "^4.12.3"
   }
 }
