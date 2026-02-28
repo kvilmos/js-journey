@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "@app/server",
   "module": "index.js",
   "type": "module",
   "devDependencies": {

@@ -1,5 +1,5 @@
 {
-  "name": "shared",
+  "name": "@app/shared",
   "module": "index.js",
   "type": "module",
   "devDependencies": {
