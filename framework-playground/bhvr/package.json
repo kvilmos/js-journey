@@ -1,0 +1,10 @@
+{
+  "name": "bhvr-monorepo",
+  "version": "0.0.1",
+  "description": "A monorepo inspired by bhvr stack.",
+  "workspaces": [
+    "./server",
+    "./client",
+    "./shared"
+  ]
+}
