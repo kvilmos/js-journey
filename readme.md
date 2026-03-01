@@ -1,9 +1,9 @@
 ### My JS Journey
 
-A simple JavaScript project that represents my learning journey. As a web developer student I never really got in touch with plain JavaScript during my semesters, so I decided to learn it by myself.
+This repository represents my JavaScript learning playground. During my studies, I didn't have much exposure to vanilla JavaScript, so I decided to learn and practice it on my own.
 
-This is a playground project where I practice the basics of the language and create small demos for different JavaScript features. My goal is to solve all 12 problems in Advent of Code 2025.
+This project contains a variety of small experiments, lessons, and demos covering different JavaScript features, along with some HTML and CSS. Before using a new concept in another web project, I usually experiment with it here. Whenever I learn a new feature, I immediately practice it in this repository.
 
 #### Running
 
-To run the code, I use Node.js v22.0.0
+Initially, I used Node.js v22.0.0 and v24.14.0. Recently, however, I prefer using Bun v1.3.10.
